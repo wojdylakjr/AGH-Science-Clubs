@@ -1,5 +1,7 @@
 package com.project.app.web.rest.vm;
 
+import com.project.app.domain.enumeration.Blocks;
+import com.project.app.domain.enumeration.Fields;
 import com.project.app.service.dto.AdminUserDTO;
 import javax.validation.constraints.Size;
 
@@ -15,8 +17,19 @@ public class ManagedUserVM extends AdminUserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
+    private Blocks block;
+    private Fields field;
+
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
+    }
+
+    public Blocks getBlock() {
+        return block;
+    }
+
+    public Fields getField() {
+        return field;
     }
 
     public String getPassword() {

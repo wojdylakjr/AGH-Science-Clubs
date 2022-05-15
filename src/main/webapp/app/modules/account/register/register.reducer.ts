@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Blocks } from 'app/shared/model/enumerations/blocks.model';
 
 import { serializeAxiosError } from 'app/shared/reducers/reducer.utils';
+import { Fields } from 'app/shared/model/enumerations/fields.model';
 
 const initialState = {
   loading: false,
@@ -17,7 +19,8 @@ export type RegisterState = Readonly<typeof initialState>;
 
 export const handleRegister = createAsyncThunk(
   'register/create_account',
-  async (data: { login: string; email: string; password: string; langKey?: string }) => axios.post<any>('api/register', data),
+  async (data: { login: string; email: string; password: string; block: Blocks; field: Fields; langKey?: string }) =>
+    axios.post<any>('api/register', data),
   { serializeError: serializeAxiosError }
 );
 

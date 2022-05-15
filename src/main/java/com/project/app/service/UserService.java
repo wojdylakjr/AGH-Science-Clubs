@@ -164,7 +164,7 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
-        if (userDTO.getAuthorities() != null) {
+        if (!userDTO.getAuthorities().isEmpty()) {
             Set<Authority> authorities = userDTO
                 .getAuthorities()
                 .stream()
@@ -172,6 +172,12 @@ public class UserService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
+            user.setAuthorities(authorities);
+        } else {
+            Authority userAuthority = new Authority();
+            userAuthority.setName("ROLE_USER");
+            Set<Authority> authorities = new HashSet<>();
+            authorities.add(userAuthority);
             user.setAuthorities(authorities);
         }
         userRepository.save(user);

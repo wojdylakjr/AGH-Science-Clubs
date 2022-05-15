@@ -1,0 +1,37 @@
+entity CalendarEvent{
+title String required
+startDate Instant
+endDate Instant
+publicationDate Instant
+description String
+link String
+imageUrl String
+status String
+}
+
+enum Blocks {
+  MATEMATYCZNY,
+  FIZYCZNY,
+  INFORMATYCZNY
+}
+
+enum Fields{
+ZIELONY,
+CZERWONY,
+CZARNY
+}
+
+entity ExtraUser {
+  block Blocks
+  field Fields
+}
+
+
+
+relationship ManyToOne{
+CalendarEvent{user(login)} to User
+}
+
+relationship OneToOne {
+    ExtraUser to User
+}

@@ -4,6 +4,8 @@ import sinon from 'sinon';
 import configureStore from 'redux-mock-store';
 
 import register, { handleRegister, reset } from './register.reducer';
+import { Fields } from 'app/shared/model/enumerations/fields.model';
+import { Blocks } from 'app/shared/model/enumerations/blocks.model';
 
 describe('Creating account tests', () => {
   const initialState = {
@@ -82,7 +84,7 @@ describe('Creating account tests', () => {
           payload: resolvedObject,
         },
       ];
-      await store.dispatch(handleRegister({ login: '', email: '', password: '' }));
+      await store.dispatch(handleRegister({ login: '', email: '', password: '', block: Blocks.FIZYCZNY, field: Fields.CZARNY }));
       expect(store.getActions()[0]).toMatchObject(expectedActions[0]);
       expect(store.getActions()[1]).toMatchObject(expectedActions[1]);
     });

@@ -3,6 +3,7 @@ package com.project.app.web.rest;
 import com.project.app.domain.User;
 import com.project.app.repository.UserRepository;
 import com.project.app.security.SecurityUtils;
+import com.project.app.service.ExtraUserService;
 import com.project.app.service.MailService;
 import com.project.app.service.UserService;
 import com.project.app.service.dto.AdminUserDTO;
@@ -41,10 +42,18 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final ExtraUserService extraUserService;
+
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        ExtraUserService extraUserService
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.extraUserService = extraUserService;
     }
 
     /**
@@ -61,8 +70,14 @@ public class AccountResource {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        //        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        User user = extraUserService.registerExtraUser(
+            managedUserVM,
+            managedUserVM.getPassword(),
+            managedUserVM.getBlock(),
+            managedUserVM.getField()
+        );
+        //        mailService.sendActivationEmail(user);
     }
 
     /**

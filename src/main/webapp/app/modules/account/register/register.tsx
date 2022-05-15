@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { handleRegister, reset } from './register.reducer';
+import { Blocks } from 'app/shared/model/enumerations/blocks.model';
+import { Fields } from 'app/shared/model/enumerations/fields.model';
 
 export const RegisterPage = () => {
   const [password, setPassword] = useState('');
@@ -18,8 +20,8 @@ export const RegisterPage = () => {
     []
   );
 
-  const handleValidSubmit = ({ username, email, firstPassword }) => {
-    dispatch(handleRegister({ login: username, email, password: firstPassword, langKey: 'en' }));
+  const handleValidSubmit = ({ username, email, firstPassword, block, field }) => {
+    dispatch(handleRegister({ login: username, email, password: firstPassword, block, field, langKey: 'en' }));
   };
 
   const updatePassword = event => setPassword(event.target.value);
@@ -31,6 +33,9 @@ export const RegisterPage = () => {
       toast.success(successMessage);
     }
   }, [successMessage]);
+
+  const blockValues = Object.keys(Blocks);
+  const fieldsValues = Object.keys(Fields);
 
   return (
     <div>
@@ -99,6 +104,21 @@ export const RegisterPage = () => {
               }}
               data-cy="secondPassword"
             />
+            <ValidatedField label="block" id="extra-user-block" name="block" data-cy="block" type="select">
+              {blockValues.map(block => (
+                <option value={block} key={block}>
+                  {block}
+                </option>
+              ))}
+            </ValidatedField>
+            <ValidatedField label="Field" id="extra-user-field" name="field" data-cy="field" type="select">
+              {fieldsValues.map(fields => (
+                <option value={fields} key={fields}>
+                  {fields}
+                </option>
+              ))}
+            </ValidatedField>
+
             <Button id="register-submit" color="primary" type="submit" data-cy="submit">
               Register
             </Button>

@@ -1,0 +1,34 @@
+{
+  "applications": "*",
+  "changelogDate": "20220515163309",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "extra_user",
+  "fields": [
+    {
+      "fieldName": "block",
+      "fieldType": "Blocks",
+      "fieldValues": "MATEMATYCZNY,FIZYCZNY,INFORMATYCZNY"
+    },
+    {
+      "fieldName": "field",
+      "fieldType": "Fields",
+      "fieldValues": "ZIELONY,CZERWONY,CZARNY"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ExtraUser",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "extraUser",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "no"
+}
