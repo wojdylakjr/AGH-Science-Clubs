@@ -187,26 +187,6 @@ class ExtraUserResourceIT {
 
     @Test
     @Transactional
-    void putNonExistingExtraUser() throws Exception {
-        int databaseSizeBeforeUpdate = extraUserRepository.findAll().size();
-        extraUser.setId(count.incrementAndGet());
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restExtraUserMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, extraUser.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(extraUser))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the ExtraUser in the database
-        List<ExtraUser> extraUserList = extraUserRepository.findAll();
-        assertThat(extraUserList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
     void putWithIdMismatchExtraUser() throws Exception {
         int databaseSizeBeforeUpdate = extraUserRepository.findAll().size();
         extraUser.setId(count.incrementAndGet());
@@ -219,22 +199,6 @@ class ExtraUserResourceIT {
                     .content(TestUtil.convertObjectToJsonBytes(extraUser))
             )
             .andExpect(status().isBadRequest());
-
-        // Validate the ExtraUser in the database
-        List<ExtraUser> extraUserList = extraUserRepository.findAll();
-        assertThat(extraUserList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void putWithMissingIdPathParamExtraUser() throws Exception {
-        int databaseSizeBeforeUpdate = extraUserRepository.findAll().size();
-        extraUser.setId(count.incrementAndGet());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restExtraUserMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(extraUser)))
-            .andExpect(status().isMethodNotAllowed());
 
         // Validate the ExtraUser in the database
         List<ExtraUser> extraUserList = extraUserRepository.findAll();
@@ -299,64 +263,6 @@ class ExtraUserResourceIT {
         ExtraUser testExtraUser = extraUserList.get(extraUserList.size() - 1);
         assertThat(testExtraUser.getBlock()).isEqualTo(UPDATED_BLOCK);
         assertThat(testExtraUser.getField()).isEqualTo(UPDATED_FIELD);
-    }
-
-    @Test
-    @Transactional
-    void patchNonExistingExtraUser() throws Exception {
-        int databaseSizeBeforeUpdate = extraUserRepository.findAll().size();
-        extraUser.setId(count.incrementAndGet());
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restExtraUserMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, extraUser.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(extraUser))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the ExtraUser in the database
-        List<ExtraUser> extraUserList = extraUserRepository.findAll();
-        assertThat(extraUserList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithIdMismatchExtraUser() throws Exception {
-        int databaseSizeBeforeUpdate = extraUserRepository.findAll().size();
-        extraUser.setId(count.incrementAndGet());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restExtraUserMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(extraUser))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the ExtraUser in the database
-        List<ExtraUser> extraUserList = extraUserRepository.findAll();
-        assertThat(extraUserList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithMissingIdPathParamExtraUser() throws Exception {
-        int databaseSizeBeforeUpdate = extraUserRepository.findAll().size();
-        extraUser.setId(count.incrementAndGet());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restExtraUserMockMvc
-            .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(extraUser))
-            )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the ExtraUser in the database
-        List<ExtraUser> extraUserList = extraUserRepository.findAll();
-        assertThat(extraUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
