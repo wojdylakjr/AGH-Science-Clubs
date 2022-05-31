@@ -21,7 +21,7 @@
     "enableTranslation": false,
     "entities": ["CalendarEvent", "ExtraUser"],
     "entitySuffix": "",
-    "herokuAppName": "calm-river-35946",
+    "herokuAppName": "agh-juice",
     "herokuDeployType": "jar",
     "herokuJavaVersion": "11",
     "jhiPrefix": "jhi",
