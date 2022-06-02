@@ -159,7 +159,6 @@ public class ExtraUserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of extraUsers in body.
      */
     @GetMapping("/extra-users")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public List<ExtraUser> getAllExtraUsers() {
         log.debug("REST request to get all ExtraUsers");
         return extraUserRepository.findAll();
@@ -172,7 +171,6 @@ public class ExtraUserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the extraUser, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/extra-users/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<ExtraUser> getExtraUser(@PathVariable Long id) {
         log.debug("REST request to get ExtraUser : {}", id);
         Optional<ExtraUser> extraUser = extraUserRepository.findById(id);

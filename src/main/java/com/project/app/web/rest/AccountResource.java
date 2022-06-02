@@ -1,5 +1,6 @@
 package com.project.app.web.rest;
 
+import com.project.app.domain.ExtraUser;
 import com.project.app.domain.User;
 import com.project.app.repository.UserRepository;
 import com.project.app.security.SecurityUtils;
@@ -71,7 +72,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         //        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        User user = extraUserService.registerExtraUser(
+        ExtraUser user = extraUserService.registerExtraUser(
             managedUserVM,
             managedUserVM.getPassword(),
             managedUserVM.getBlock(),

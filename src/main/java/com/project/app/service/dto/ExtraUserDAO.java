@@ -45,6 +45,6 @@ public class ExtraUserDAO extends AdminUserDTO {
 
     @Override
     public String toString() {
-        return "ExtraUserDAO{" + super.toString() + "} ";
+        return "ExtraUserDAO{" + super.toString() + "} + Blok: " + block + "Field: " + field;
     }
 }

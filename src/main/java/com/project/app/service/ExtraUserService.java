@@ -50,7 +50,7 @@ public class ExtraUserService {
         this.userService = userService;
     }
 
-    public User registerExtraUser(AdminUserDTO userDTO, String password, Blocks block, Fields field) {
+    public ExtraUser registerExtraUser(AdminUserDTO userDTO, String password, Blocks block, Fields field) {
         User newUser = userService.registerUser(userDTO, password);
         //new extra user
         ExtraUser newExtraUser = new ExtraUser();
@@ -61,7 +61,7 @@ public class ExtraUserService {
         log.debug("Created Information for ExtraUser: {}", newExtraUser);
         log.debug("Block:", block);
         log.debug("Field:", field);
-        return newUser;
+        return newExtraUser;
     }
 
     public ExtraUser createExtraUser(AdminUserDTO userDTO, Blocks block, Fields field) {

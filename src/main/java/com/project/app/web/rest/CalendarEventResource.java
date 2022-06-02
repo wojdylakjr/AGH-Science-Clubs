@@ -2,6 +2,7 @@ package com.project.app.web.rest;
 
 import com.project.app.domain.CalendarEvent;
 import com.project.app.repository.CalendarEventRepository;
+import com.project.app.security.AuthoritiesConstants;
 import com.project.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -48,6 +50,7 @@ public class CalendarEventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/calendar-events")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<CalendarEvent> createCalendarEvent(@Valid @RequestBody CalendarEvent calendarEvent) throws URISyntaxException {
         log.debug("REST request to save CalendarEvent : {}", calendarEvent);
         if (calendarEvent.getId() != null) {
@@ -71,6 +74,7 @@ public class CalendarEventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/calendar-events/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<CalendarEvent> updateCalendarEvent(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody CalendarEvent calendarEvent
@@ -106,6 +110,7 @@ public class CalendarEventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/calendar-events/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<CalendarEvent> partialUpdateCalendarEvent(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody CalendarEvent calendarEvent
@@ -192,6 +197,7 @@ public class CalendarEventResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/calendar-events/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<Void> deleteCalendarEvent(@PathVariable Long id) {
         log.debug("REST request to delete CalendarEvent : {}", id);
         calendarEventRepository.deleteById(id);
