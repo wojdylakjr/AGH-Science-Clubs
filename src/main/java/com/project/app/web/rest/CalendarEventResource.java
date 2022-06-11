@@ -3,6 +3,8 @@ package com.project.app.web.rest;
 import com.project.app.domain.CalendarEvent;
 import com.project.app.repository.CalendarEventRepository;
 import com.project.app.security.AuthoritiesConstants;
+import com.project.app.service.ExtraUserService;
+import com.project.app.service.UserService;
 import com.project.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,8 +40,18 @@ public class CalendarEventResource {
 
     private final CalendarEventRepository calendarEventRepository;
 
-    public CalendarEventResource(CalendarEventRepository calendarEventRepository) {
+    private final UserService userService;
+
+    private final ExtraUserService extraUserService;
+
+    public CalendarEventResource(
+        CalendarEventRepository calendarEventRepository,
+        UserService userService,
+        ExtraUserService extraUserService
+    ) {
         this.calendarEventRepository = calendarEventRepository;
+        this.userService = userService;
+        this.extraUserService = extraUserService;
     }
 
     /**
@@ -56,7 +68,11 @@ public class CalendarEventResource {
         if (calendarEvent.getId() != null) {
             throw new BadRequestAlertException("A new calendarEvent cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        calendarEvent.setExtraUser(extraUserService.getExtraUserByUserId(userService.getUserWithAuthorities().get().getId()));
+
         CalendarEvent result = calendarEventRepository.save(calendarEvent);
+
         return ResponseEntity
             .created(new URI("/api/calendar-events/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -188,6 +204,14 @@ public class CalendarEventResource {
         log.debug("REST request to get CalendarEvent : {}", id);
         Optional<CalendarEvent> calendarEvent = calendarEventRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(calendarEvent);
+    }
+
+    // get (id koła)
+    @GetMapping("/calendar-events/club/{idKola}")
+    public ResponseEntity<List<CalendarEvent>> getCalendarEventId(@PathVariable Long idKola) {
+        log.debug("REST request to get CalendarEvent : {}", idKola);
+        Optional<List<CalendarEvent>> calendarEvents = calendarEventRepository.getAllByExtraUserId(idKola);
+        return ResponseUtil.wrapOrNotFound(calendarEvents);
     }
 
     /**

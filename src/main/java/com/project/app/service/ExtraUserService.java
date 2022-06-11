@@ -5,9 +5,11 @@ import com.project.app.domain.User;
 import com.project.app.domain.enumeration.Blocks;
 import com.project.app.domain.enumeration.Fields;
 import com.project.app.repository.AuthorityRepository;
+import com.project.app.repository.CalendarEventRepository;
 import com.project.app.repository.ExtraUserRepository;
 import com.project.app.repository.UserRepository;
 import com.project.app.service.dto.AdminUserDTO;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +36,16 @@ public class ExtraUserService {
 
     private final UserService userService;
 
+    private final CalendarEventRepository calendarEventRepository;
+
     public ExtraUserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         ExtraUserRepository extraUserRepository,
         CacheManager cacheManager,
-        UserService userService
+        UserService userService,
+        CalendarEventRepository calendarEventRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -48,14 +53,17 @@ public class ExtraUserService {
         this.cacheManager = cacheManager;
         this.extraUserRepository = extraUserRepository;
         this.userService = userService;
+        this.calendarEventRepository = calendarEventRepository;
     }
 
     public ExtraUser registerExtraUser(AdminUserDTO userDTO, String password, Blocks block, Fields field) {
         User newUser = userService.registerUser(userDTO, password);
         //new extra user
         ExtraUser newExtraUser = new ExtraUser();
+
         newExtraUser.setUser(newUser);
         newExtraUser.setBlock(block);
+
         newExtraUser.setField(field);
         extraUserRepository.save(newExtraUser);
         log.debug("Created Information for ExtraUser: {}", newExtraUser);
@@ -129,6 +137,7 @@ public class ExtraUserService {
     }
 
     public void deleteUser(Long id) {
+        calendarEventRepository.deleteAllByExtraUserId(id);
         Optional<ExtraUser> user = extraUserRepository.findOneById(id);
         String login = user.get().getUser().getLogin();
         extraUserRepository
@@ -164,5 +173,13 @@ public class ExtraUserService {
         //                this.clearUserCaches(user);
         //                log.debug("Changed Information for User: {}", user);
         //            });
+    }
+
+    public ExtraUser getExtraUserByUserId(Long id) {
+        try {
+            return extraUserRepository.findByUserId(id).get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 }

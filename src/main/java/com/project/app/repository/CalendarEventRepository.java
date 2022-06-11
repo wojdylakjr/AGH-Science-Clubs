@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CalendarEventRepository extends JpaRepository<CalendarEvent, Long> {
-    @Query("select calendarEvent from CalendarEvent calendarEvent where calendarEvent.user.login = ?#{principal.username}")
-    List<CalendarEvent> findByUserIsCurrentUser();
+    //    @Query("select calendarEvent from CalendarEvent calendarEvent where calendarEvent.user.login = ?#{principal.username}")
+    //    List<CalendarEvent> findByUserIsCurrentUser();
 
     default Optional<CalendarEvent> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
@@ -29,15 +29,19 @@ public interface CalendarEventRepository extends JpaRepository<CalendarEvent, Lo
         return this.findAllWithToOneRelationships(pageable);
     }
 
+    Optional<List<CalendarEvent>> getAllByExtraUserId(Long id);
+
+    Optional<?> deleteAllByExtraUserId(Long id);
+
     @Query(
-        value = "select distinct calendarEvent from CalendarEvent calendarEvent left join fetch calendarEvent.user",
+        value = "select distinct calendarEvent from CalendarEvent calendarEvent left join fetch calendarEvent.extraUser",
         countQuery = "select count(distinct calendarEvent) from CalendarEvent calendarEvent"
     )
     Page<CalendarEvent> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select distinct calendarEvent from CalendarEvent calendarEvent left join fetch calendarEvent.user")
+    @Query("select distinct calendarEvent from CalendarEvent calendarEvent left join fetch calendarEvent.extraUser")
     List<CalendarEvent> findAllWithToOneRelationships();
 
-    @Query("select calendarEvent from CalendarEvent calendarEvent left join fetch calendarEvent.user where calendarEvent.id =:id")
+    @Query("select calendarEvent from CalendarEvent calendarEvent left join fetch calendarEvent.extraUser where calendarEvent.id =:id")
     Optional<CalendarEvent> findOneWithToOneRelationships(@Param("id") Long id);
 }

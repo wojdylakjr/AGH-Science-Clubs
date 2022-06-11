@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExtraUserRepository extends JpaRepository<ExtraUser, Long> {
     Optional<ExtraUser> findOneById(Long id);
+
+    Optional<ExtraUser> findByUserId(Long id);
 }

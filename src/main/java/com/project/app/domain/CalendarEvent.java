@@ -46,7 +46,7 @@ public class CalendarEvent implements Serializable {
     private String status;
 
     @ManyToOne
-    private User user;
+    private ExtraUser extraUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -167,16 +167,16 @@ public class CalendarEvent implements Serializable {
         this.status = status;
     }
 
-    public User getUser() {
-        return this.user;
+    public ExtraUser getExtraUser() {
+        return this.extraUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setExtraUser(ExtraUser extraUser) {
+        this.extraUser = extraUser;
     }
 
-    public CalendarEvent user(User user) {
-        this.setUser(user);
+    public CalendarEvent extraUser(ExtraUser extraUser) {
+        this.setExtraUser(extraUser);
         return this;
     }
 
@@ -212,6 +212,7 @@ public class CalendarEvent implements Serializable {
             ", link='" + getLink() + "'" +
             ", imageUrl='" + getImageUrl() + "'" +
             ", status='" + getStatus() + "'" +
-            "}";
+            "extraUser: " + getExtraUser() +
+                "}";
     }
 }
