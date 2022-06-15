@@ -5,6 +5,7 @@ import com.project.app.repository.ExtraUserRepository;
 import com.project.app.security.AuthoritiesConstants;
 import com.project.app.service.ExtraUserService;
 import com.project.app.service.MailService;
+import com.project.app.service.UserService;
 import com.project.app.service.dto.ExtraUserDAO;
 import com.project.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -30,7 +31,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @Transactional
 public class ExtraUserResource {
 
-    private final Logger log = LoggerFactory.getLogger(ExtraUserResource.class);
+    private final Logger log = LoggerFactory.getLogger(com.project.app.web.rest.ExtraUserResource.class);
 
     private static final String ENTITY_NAME = "extraUser";
 
@@ -40,11 +41,18 @@ public class ExtraUserResource {
     private final ExtraUserRepository extraUserRepository;
     private final ExtraUserService extraUserService;
     private final MailService mailService;
+    private final UserService userService;
 
-    public ExtraUserResource(ExtraUserRepository extraUserRepository, ExtraUserService extraUserService, MailService mailService) {
+    public ExtraUserResource(
+        ExtraUserRepository extraUserRepository,
+        ExtraUserService extraUserService,
+        MailService mailService,
+        UserService userService
+    ) {
         this.extraUserRepository = extraUserRepository;
         this.extraUserService = extraUserService;
         this.mailService = mailService;
+        this.userService = userService;
     }
 
     /**
@@ -162,6 +170,13 @@ public class ExtraUserResource {
     public List<ExtraUser> getAllExtraUsers() {
         log.debug("REST request to get all ExtraUsers");
         return extraUserRepository.findAll();
+    }
+
+    @GetMapping("/extra-users/current")
+    public ExtraUser getCurrentExtraUser() {
+        log.debug("REST request to get current ExtraUser");
+        //        ExtraUser extraUser = extraUserService.getExtraUserByUserId(userService.getUserWithAuthorities().get().getId());
+        return extraUserService.getExtraUserByUserId(userService.getUserWithAuthorities().get().getId());
     }
 
     /**
