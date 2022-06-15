@@ -45,16 +45,16 @@ spring:
   liquibase:
     contexts: prod
   mail:
-    host: smtp.gmail.com
+    host: smtp.mail.yahoo.com
     port: 587
-    username: wojdylakdev@gmail.com #Replace this field with your Gmail username.
-    password: ProgramistaXD123 #Replace this field with your Gmail password/App password.
+    username: aghjuice@yahoo.com #Replace this field with your Yahoo username.
+    password: mgquexchnrrsnwoh #Replace this field with your Yahoo password.
     protocol: smtp
     tls: true
     properties.mail.smtp:
       auth: true
       starttls.enable: true
-      ssl.trust: smtp.gmail.com
+      ssl.trust: smtp.mail.yahoo.com
   thymeleaf:
     cache: true
   sleuth:
@@ -126,7 +126,7 @@ jhipster:
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://my-server-url-to-change # Modify according to your server's URL
+    base-url: https://juice-agh.netlify.app # Modify according to your server's URL
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
